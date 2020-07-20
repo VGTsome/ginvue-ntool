@@ -20,7 +20,7 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+
 
 go.sum
 /server/log/
@@ -29,3 +29,5 @@ server/*.exe
 *.iml
 server/fileDir/
 
+
+server/config.yaml
