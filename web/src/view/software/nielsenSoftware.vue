@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">      
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">          
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增货柜产品</el-button>
+          <el-button @click="openDialog" type="primary">新增Nielsen软件表</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -34,20 +34,24 @@
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
     
-    <el-table-column label="cabinetId字段" prop="cabinetId" width="120"></el-table-column> 
+    <el-table-column label="softName字段" prop="softName" width="120"></el-table-column> 
     
-    <el-table-column label="productId字段" prop="productId" width="120"></el-table-column> 
+    <el-table-column label="softDescription字段" prop="softDescription" width="120"></el-table-column> 
     
-    <el-table-column label="status字段" prop="status" width="120"></el-table-column> 
+    <el-table-column label="download字段" prop="download" width="120"></el-table-column> 
+    
+    <el-table-column label="softImg字段" prop="softImg" width="120"></el-table-column> 
+    
+    <el-table-column label="version字段" prop="version" width="120"></el-table-column> 
     
       <el-table-column label="按钮组">
         <template slot-scope="scope">
-          <el-button @click="updateCabinetProduct(scope.row)" size="small" type="primary">变更</el-button>
+          <el-button @click="updateNielsenSoftware(scope.row)" size="small" type="primary">变更</el-button>
           <el-popover placement="top" width="160" v-model="scope.row.visible">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteCabinetProduct(scope.row)">确定</el-button>
+              <el-button type="primary" size="mini" @click="deleteNielsenSoftware(scope.row)">确定</el-button>
             </div>
             <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
           </el-popover>
@@ -67,7 +71,32 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      此处请使用表单生成器生成form填充 表单默认绑定 formData 如手动修改过请自行修改key
+            <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
+        <el-form-item label="软件名称" prop="soft_name">
+          <el-input v-model="formData.soft_name" placeholder="请输入软件名称" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="软件描述" prop="soft_description">
+          <el-input v-model="formData.soft_description" type="textarea" placeholder="请输入软件描述"
+            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="上传软件" prop="download" required>
+          <el-upload ref="download" :file-list="downloadfileList" :action="downloadAction"
+            :before-upload="downloadBeforeUpload" accept="application/zip">
+            <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="软件图片" prop="soft_img">
+          <el-upload ref="soft_img" :file-list="soft_imgfileList" :action="soft_imgAction"
+            :before-upload="soft_imgBeforeUpload" name="fileimg">
+            <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="软件版本" prop="version">
+          <el-input v-model="formData.version" placeholder="请输入软件版本" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+      </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
@@ -78,29 +107,29 @@
 
 <script>
 import {
-    createCabinetProduct,
-    deleteCabinetProduct,
-    deleteCabinetProductByIds,
-    updateCabinetProduct,
-    findCabinetProduct,
-    getCabinetProductList
-} from "@/api/cabinetProduct";  //  此处请自行替换地址
+    createNielsenSoftware,
+    deleteNielsenSoftware,
+    deleteNielsenSoftwareByIds,
+    updateNielsenSoftware,
+    findNielsenSoftware,
+    getNielsenSoftwareList
+} from "@/api/nielsenSoftware";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
 export default {
-  name: "CabinetProduct",
+  name: "NielsenSoftware",
   mixins: [infoList],
   data() {
     return {
-      listApi: getCabinetProductList,
+      listApi: getNielsenSoftwareList,
       dialogFormVisible: false,
       visible: false,
       type: "",
       deleteVisible: false,
       multipleSelection: [],
       formData: {
-        cabinetId:null,productId:null,status:null,
+        softName:null,softDescription:null,download:null,softImg:null,version:null,
       }
     };
   },
@@ -122,10 +151,28 @@ export default {
     }
   },
   methods: {
+      downloadBeforeUpload(file) {
+      let isRightSize = file.size / 1024 / 1024 < 300
+      if (!isRightSize) {
+        this.$message.error('文件大小超过 300MB')
+      }
+      let isAccept = new RegExp('application/zip').test(file.type)
+      if (!isAccept) {
+        this.$message.error('应该选择zip类型的文件')
+      }
+      return isRightSize && isAccept
+    },
+    soft_imgBeforeUpload(file) {
+      let isRightSize = file.size / 1024 / 1024 < 5
+      if (!isRightSize) {
+        this.$message.error('文件大小超过 5MB')
+      }
+      return isRightSize
+    },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 10       
+        this.pageSize = 10         
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -137,7 +184,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteCabinetProductByIds({ ids })
+        const res = await deleteNielsenSoftwareByIds({ ids })
         if (res.code == 0) {
           this.$message({
             type: 'success',
@@ -147,11 +194,11 @@ export default {
           this.getTableData()
         }
       },
-    async updateCabinetProduct(row) {
-      const res = await findCabinetProduct({ ID: row.ID });
+    async updateNielsenSoftware(row) {
+      const res = await findNielsenSoftware({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.formData = res.data.resscp;
+        this.formData = res.data.rens;
         this.dialogFormVisible = true;
       }
     },
@@ -159,14 +206,16 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
         
-          cabinetId:null,
-          productId:null,
-          status:null,
+          softName:null,
+          softDescription:null,
+          download:null,
+          softImg:null,
+          version:null,
       };
     },
-    async deleteCabinetProduct(row) {
+    async deleteNielsenSoftware(row) {
       this.visible = false;
-      const res = await deleteCabinetProduct({ ID: row.ID });
+      const res = await deleteNielsenSoftware({ ID: row.ID });
       if (res.code == 0) {
         this.$message({
           type: "success",
@@ -179,13 +228,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createCabinetProduct(this.formData);
+          res = await createNielsenSoftware(this.formData);
           break;
         case "update":
-          res = await updateCabinetProduct(this.formData);
+          res = await updateNielsenSoftware(this.formData);
           break;
         default:
-          res = await createCabinetProduct(this.formData);
+          res = await createNielsenSoftware(this.formData);
           break;
       }
       if (res.code == 0) {

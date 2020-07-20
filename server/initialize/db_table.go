@@ -22,12 +22,7 @@ func DBTables() {
 		model.ExaFileChunk{},
 		model.ExaCustomer{},
 		model.SysOperationRecord{},
-		model.CabinetProduct{},
-		model.SmartStorageCabinet{},
-		model.SmartStorageDoor{},
-		model.SmartStorageOrder{},
-		model.SmartStorageMonitor{},
-		model.SmartStorageProduct{},
+		model.NielsenSoftware{},
 	)
 	global.GVA_LOG.Debug("register table success")
 }

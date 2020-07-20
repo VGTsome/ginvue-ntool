@@ -10,18 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Tags CabinetProduct
-// @Summary 创建CabinetProduct
+// @Tags NielsenSoftware
+// @Summary 创建NielsenSoftware
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CabinetProduct true "创建CabinetProduct"
+// @Param data body model.NielsenSoftware true "创建NielsenSoftware"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /sscp/createCabinetProduct [post]
-func CreateCabinetProduct(c *gin.Context) {
-	var sscp model.CabinetProduct
-	_ = c.ShouldBindJSON(&sscp)
-	err := service.CreateCabinetProduct(sscp)
+// @Router /ns/createNielsenSoftware [post]
+func CreateNielsenSoftware(c *gin.Context) {
+	var ns model.NielsenSoftware
+	_ = c.ShouldBindJSON(&ns)
+	err := service.CreateNielsenSoftware(ns)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
@@ -29,18 +29,18 @@ func CreateCabinetProduct(c *gin.Context) {
 	}
 }
 
-// @Tags CabinetProduct
-// @Summary 删除CabinetProduct
+// @Tags NielsenSoftware
+// @Summary 删除NielsenSoftware
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CabinetProduct true "删除CabinetProduct"
+// @Param data body model.NielsenSoftware true "删除NielsenSoftware"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
-// @Router /sscp/deleteCabinetProduct [delete]
-func DeleteCabinetProduct(c *gin.Context) {
-	var sscp model.CabinetProduct
-	_ = c.ShouldBindJSON(&sscp)
-	err := service.DeleteCabinetProduct(sscp)
+// @Router /ns/deleteNielsenSoftware [delete]
+func DeleteNielsenSoftware(c *gin.Context) {
+	var ns model.NielsenSoftware
+	_ = c.ShouldBindJSON(&ns)
+	err := service.DeleteNielsenSoftware(ns)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
 	} else {
@@ -48,18 +48,18 @@ func DeleteCabinetProduct(c *gin.Context) {
 	}
 }
 
-// @Tags CabinetProduct
-// @Summary 批量删除CabinetProduct
+// @Tags NielsenSoftware
+// @Summary 批量删除NielsenSoftware
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除CabinetProduct"
+// @Param data body request.IdsReq true "批量删除NielsenSoftware"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
-// @Router /sscp/deleteCabinetProductByIds [delete]
-func DeleteCabinetProductByIds(c *gin.Context) {
+// @Router /ns/deleteNielsenSoftwareByIds [delete]
+func DeleteNielsenSoftwareByIds(c *gin.Context) {
 	var IDS request.IdsReq
     _ = c.ShouldBindJSON(&IDS)
-	err := service.DeleteCabinetProductByIds(IDS)
+	err := service.DeleteNielsenSoftwareByIds(IDS)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
 	} else {
@@ -67,18 +67,18 @@ func DeleteCabinetProductByIds(c *gin.Context) {
 	}
 }
 
-// @Tags CabinetProduct
-// @Summary 更新CabinetProduct
+// @Tags NielsenSoftware
+// @Summary 更新NielsenSoftware
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CabinetProduct true "更新CabinetProduct"
+// @Param data body model.NielsenSoftware true "更新NielsenSoftware"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router /sscp/updateCabinetProduct [put]
-func UpdateCabinetProduct(c *gin.Context) {
-	var sscp model.CabinetProduct
-	_ = c.ShouldBindJSON(&sscp)
-	err := service.UpdateCabinetProduct(&sscp)
+// @Router /ns/updateNielsenSoftware [put]
+func UpdateNielsenSoftware(c *gin.Context) {
+	var ns model.NielsenSoftware
+	_ = c.ShouldBindJSON(&ns)
+	err := service.UpdateNielsenSoftware(&ns)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("更新失败，%v", err), c)
 	} else {
@@ -86,37 +86,37 @@ func UpdateCabinetProduct(c *gin.Context) {
 	}
 }
 
-// @Tags CabinetProduct
-// @Summary 用id查询CabinetProduct
+// @Tags NielsenSoftware
+// @Summary 用id查询NielsenSoftware
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CabinetProduct true "用id查询CabinetProduct"
+// @Param data body model.NielsenSoftware true "用id查询NielsenSoftware"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-// @Router /sscp/findCabinetProduct [get]
-func FindCabinetProduct(c *gin.Context) {
-	var sscp model.CabinetProduct
-	_ = c.ShouldBindQuery(&sscp)
-	err, resscp := service.GetCabinetProduct(sscp.ID)
+// @Router /ns/findNielsenSoftware [get]
+func FindNielsenSoftware(c *gin.Context) {
+	var ns model.NielsenSoftware
+	_ = c.ShouldBindQuery(&ns)
+	err, rens := service.GetNielsenSoftware(ns.ID)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("查询失败，%v", err), c)
 	} else {
-		response.OkWithData(gin.H{"resscp": resscp}, c)
+		response.OkWithData(gin.H{"rens": rens}, c)
 	}
 }
 
-// @Tags CabinetProduct
-// @Summary 分页获取CabinetProduct列表
+// @Tags NielsenSoftware
+// @Summary 分页获取NielsenSoftware列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.CabinetProductSearch true "分页获取CabinetProduct列表"
+// @Param data body request.NielsenSoftwareSearch true "分页获取NielsenSoftware列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /sscp/getCabinetProductList [get]
-func GetCabinetProductList(c *gin.Context) {
-	var pageInfo request.CabinetProductSearch
+// @Router /ns/getNielsenSoftwareList [get]
+func GetNielsenSoftwareList(c *gin.Context) {
+	var pageInfo request.NielsenSoftwareSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	err, list, total := service.GetCabinetProductInfoList(pageInfo)
+	err, list, total := service.GetNielsenSoftwareInfoList(pageInfo)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
 	} else {
