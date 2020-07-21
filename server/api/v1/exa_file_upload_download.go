@@ -24,6 +24,7 @@ import (
 func UploadFile(c *gin.Context) {
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
+
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
 	} else {

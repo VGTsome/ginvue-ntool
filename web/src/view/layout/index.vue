@@ -4,8 +4,8 @@
       <el-row :class="[isShadowBg?'shadowBg':'']" @click.native="changeShadow()"></el-row>
       <el-aside class="main-cont main-left">
         <div class="tilte">
-          <img alt class="logoimg" src="~@/assets/nav_logo.png" />
-          <h2 class="tit-text" v-if="isSider">Gin-Vue-Admin</h2>
+          <img alt class="logoimg" src="~@/assets/nav_logo2.png" />
+          <h2 class="tit-text" v-if="isSider">Nilsen DA</h2>
         </div>
         <Aside class="aside" />
       </el-aside>
@@ -353,7 +353,7 @@ $mainHight: 100vh;
     width: 30px;
     height: 30px;
     vertical-align: middle;
-    background: #fff;
+    background: #00adee;;
     border-radius: 50%;
     padding: 3px;
   }
