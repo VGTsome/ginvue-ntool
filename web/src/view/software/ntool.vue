@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-image style="top: 0px;"
-              src="/upload/4ea4ad6c-5ef1-453f-923e-82a022649a01.png">
+              :src=logoimg>
     </el-image>
     <el-row>
       <el-col :xs="12"
               :sm="12">
-        <el-input placeholder="请输入内容">
+        <el-input placeholder="请输入内容"
+                  v-model="searchInfo.softName">
         </el-input>
       </el-col>
       <el-col :xs="12"
@@ -18,28 +19,29 @@
     <el-table :data="tableData"
               :fit="true"
               :show-header="true">
-      <el-table-column prop="icon"
-                       label="图标">
+      <el-table-column prop="softImg"
+                       label="图标"
+                       width="60">
         <template slot-scope="scope">
           <img alt
                class="logoimg"
-               
                :src=scope.row.softImg />
 
         </template>
-
       </el-table-column>
       <el-table-column prop="softName"
-                       label="软件名">
+                       label="软件名"
+                       width="120">
       </el-table-column>
       <el-table-column label="描述"
-                       width="180">
+                       prop="softDescription">
       </el-table-column>
       <el-table-column label="操作"
                        fixed="right"
                        width="200px">
-        <template>
+        <template slot-scope="scope">
           <el-button mc-type="column-el-button"
+                     @click="downloadSoft(scope.row)"
                      size="mini"
                      type="primary">下载</el-button>
 
@@ -63,18 +65,25 @@ export default {
   mixins: [infoList],
   data() {
     return {
-      listApi: getNielsenSoftwareList
+      listApi: getNielsenSoftwareList,
+      filePath: imgPath,
+      logoimg: require('../../assets/banner.png')
     }
   },
-  
-  methods: {
 
+  methods: {
+    downloadSoft(row) {
+      debugger
+      window.location.href = row.download
+    },
+    changedir() {
+      return 1
+    },
     onSubmit() {
       debugger
       this.page = 1
       this.pageSize = 10
       this.getTableData()
-      
     }
   },
   created() {
@@ -82,3 +91,13 @@ export default {
   }
 }
 </script>
+<style scoped>
+.logoimg {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  background: #00adee;
+  border-radius: 50%;
+  padding: 3px;
+}
+</style>

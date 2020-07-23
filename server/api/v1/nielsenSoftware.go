@@ -7,6 +7,7 @@ import (
 	"gin-vue-admin/model/request"
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -58,7 +59,7 @@ func DeleteNielsenSoftware(c *gin.Context) {
 // @Router /ns/deleteNielsenSoftwareByIds [delete]
 func DeleteNielsenSoftwareByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	err := service.DeleteNielsenSoftwareByIds(IDS)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
@@ -115,8 +116,9 @@ func FindNielsenSoftware(c *gin.Context) {
 // @Router /ns/getNielsenSoftwareList [get]
 func GetNielsenSoftwareList(c *gin.Context) {
 	var pageInfo request.NielsenSoftwareSearch
+
 	_ = c.ShouldBindQuery(&pageInfo)
-	err, list, total := service.GetNielsenSoftwareInfoList(pageInfo)
+	err, list, total := service.GetNielsenSoftwareInfoList(pageInfo.NielsenSoftware, pageInfo)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
 	} else {

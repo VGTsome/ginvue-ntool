@@ -35,7 +35,7 @@ func DeleteNielsenSoftware(ns model.NielsenSoftware) (err error) {
 // @return                    error
 
 func DeleteNielsenSoftwareByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.NielsenSoftware{},"id in (?)",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.NielsenSoftware{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -68,13 +68,26 @@ func GetNielsenSoftware(id uint) (err error, ns model.NielsenSoftware) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetNielsenSoftwareInfoList(info request.NielsenSoftwareSearch) (err error, list interface{}, total int) {
+func GetNielsenSoftwareInfoList(nsw model.NielsenSoftware, info request.NielsenSoftwareSearch) (err error, list interface{}, total int) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.NielsenSoftware{})
-    var nss []model.NielsenSoftware
-    // 如果有条件搜索 下方会自动创建搜索语句
+	var nss []model.NielsenSoftware
+	// 如果有条件搜索 下方会自动创建搜索语句
+
+	if nsw.SoftName != "" {
+		db = db.Where("soft_name LIKE ?", "%"+nsw.SoftName+"%")
+	}
+
+	// if api.Method != "" {
+	// 	db = db.Where("method = ?", api.Method)
+	// }
+
+	// if api.ApiGroup != "" {
+	// 	db = db.Where("api_group = ?", api.ApiGroup)
+	// }
+
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&nss).Error
 	return err, nss, total

@@ -254,10 +254,10 @@ export default {
   },
   methods: {
     updatefilelist(response) {
-      this.formData.download = response.data.file.key
+      this.formData.download = response.data.file.url
     },
     updateimglist(response) {
-      this.formData.softImg = response.data.file.key
+      this.formData.softImg = response.data.file.url
     },
     downloadBeforeUpload(file) {
       let isRightSize = file.size / 1024 / 1024 < 300

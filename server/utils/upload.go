@@ -14,11 +14,11 @@ import (
 	"github.com/qiniu/api.v7/v7/storage"
 )
 
-func UploadLocal(file *multipart.FileHeader, c *gin.Context) (err error, savePath string, key string) {
+func UploadLocal(file *multipart.FileHeader, c *gin.Context, filePath string) (err error, savePath string, key string) {
 	claims, _ := c.Get("claims")
 	keepName := c.Query("keepname")
 	waitUse := claims.(*request.CustomClaims)
-	filePath := "fileDir/"
+
 	_, e := file.Open()
 	if e != nil {
 		fmt.Println(e)
@@ -33,7 +33,13 @@ func UploadLocal(file *multipart.FileHeader, c *gin.Context) (err error, savePat
 	} else {
 		filekey = fmt.Sprintf("%d", time.Now().Unix()) + "_" + fmt.Sprintf("%d", waitUse.ID) + fileSuffix
 	}
+
 	err = c.SaveUploadedFile(file, filePath+filekey)
+	if filePath == "" {
+		filePath = global.GVA_CONFIG.System.RooturlPrefix + "fileDir/" + filekey
+	} else {
+		filePath = global.GVA_CONFIG.System.RooturlPrefix + filePath + filekey
+	}
 	return err, filePath, filekey
 
 }
