@@ -264,8 +264,8 @@ export default {
       if (!isRightSize) {
         this.$message.error('文件大小超过 300MB')
       }
-
-      let isAccept = new RegExp('application/x-zip-compressed').test(file.type)
+      debugger
+      let isAccept = new RegExp('application/.*zip.*').test(file.type)
       if (!isAccept) {
         this.$message.error('应该选择zip类型的文件')
       }
