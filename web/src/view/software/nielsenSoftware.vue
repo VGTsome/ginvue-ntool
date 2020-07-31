@@ -182,7 +182,7 @@ import {
   deleteNielsenSoftwareByIds,
   updateNielsenSoftware,
   findNielsenSoftware,
-  getNielsenSoftwareList
+  getNielsenSoftwareList,
 } from '@/api/nielsenSoftware' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/data'
 import infoList from '@/components/mixins/infoList'
@@ -197,7 +197,7 @@ export default {
     return {
       headinfo: {
         'x-token': token,
-        'x-user-id': user.ID
+        'x-user-id': user.ID,
       },
       listApi: getNielsenSoftwareList,
       dialogFormVisible: false,
@@ -210,33 +210,33 @@ export default {
         softDescription: null,
         download: null,
         softImg: null,
-        version: null
+        version: null,
       },
       rules: {
         softName: [
           {
             required: true,
             message: '请输入软件名称',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
         softDescription: [],
         version: [
           {
             required: true,
             message: '请输入软件版本',
-            trigger: 'blur'
-          }
-        ]
+            trigger: 'blur',
+          },
+        ],
       },
       downloadAction: path + '/fileUploadAndDownload/upload?keepname=1',
       downloadfileList: [],
       soft_imgAction: path + '/fileUploadAndDownload/upload',
-      soft_imgfileList: []
+      soft_imgfileList: [],
     }
   },
   filters: {
-    formatDate: function(time) {
+    formatDate: function (time) {
       if (time != null && time != '') {
         var date = new Date(time)
         return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss')
@@ -244,13 +244,13 @@ export default {
         return ''
       }
     },
-    formatBoolean: function(bool) {
+    formatBoolean: function (bool) {
       if (bool != null) {
         return bool ? '是' : '否'
       } else {
         return ''
       }
-    }
+    },
   },
   methods: {
     updatefilelist(response) {
@@ -290,14 +290,14 @@ export default {
     async onDelete() {
       const ids = []
       this.multipleSelection &&
-        this.multipleSelection.map(item => {
+        this.multipleSelection.map((item) => {
           ids.push(item.ID)
         })
       const res = await deleteNielsenSoftwareByIds({ ids })
       if (res.code == 0) {
         this.$message({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         this.deleteVisible = false
         this.getTableData()
@@ -318,7 +318,7 @@ export default {
         softDescription: null,
         download: null,
         softImg: null,
-        version: null
+        version: null,
       }
       this.$refs.download.clearFiles()
       this.$refs.soft_img.clearFiles()
@@ -329,7 +329,7 @@ export default {
       if (res.code == 0) {
         this.$message({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         this.getTableData()
       }
@@ -350,7 +350,7 @@ export default {
       if (res.code == 0) {
         this.$message({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
         this.closeDialog()
         this.getTableData()
@@ -359,11 +359,11 @@ export default {
     openDialog() {
       this.type = 'create'
       this.dialogFormVisible = true
-    }
+    },
   },
   created() {
     this.getTableData()
-  }
+  },
 }
 </script>
 

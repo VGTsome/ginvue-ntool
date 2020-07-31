@@ -54,7 +54,7 @@
 <script>
 import {
   findNielsenSoftware,
-  getNielsenSoftwareList
+  getNielsenSoftwareList,
 } from '@/api/nielsenSoftware' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/data'
 import infoList from '@/components/mixins/infoList'
@@ -67,7 +67,7 @@ export default {
     return {
       listApi: getNielsenSoftwareList,
       filePath: imgPath,
-      logoimg: require('../../assets/banner.png')
+      logoimg: require('../../assets/banner.png'),
     }
   },
 
@@ -84,11 +84,11 @@ export default {
       this.page = 1
       this.pageSize = 10
       this.getTableData()
-    }
+    },
   },
   created() {
     this.getTableData()
-  }
+  },
 }
 </script>
 <style scoped>
